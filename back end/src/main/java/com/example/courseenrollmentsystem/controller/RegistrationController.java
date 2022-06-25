@@ -1,5 +1,6 @@
 package com.example.courseenrollmentsystem.controller;
 
+import com.example.courseenrollmentsystem.dto.RegistrationRequest;
 import com.example.courseenrollmentsystem.entity.Student;
 import com.example.courseenrollmentsystem.service.RegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,7 @@ public class RegistrationController {
     @Autowired
     private  RegistrationService registrationService;
     @PostMapping("/register")
-    public void register(@RequestBody Student student){
-        registrationService.register(student);
+    public void register(@RequestBody RegistrationRequest request){
+        registrationService.register(request);
     }
 }

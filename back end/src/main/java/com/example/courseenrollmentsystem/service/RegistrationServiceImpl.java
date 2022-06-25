@@ -1,6 +1,7 @@
 package com.example.courseenrollmentsystem.service;
 
 import com.example.courseenrollmentsystem.dao.StudentRepository;
+import com.example.courseenrollmentsystem.dto.RegistrationRequest;
 import com.example.courseenrollmentsystem.entity.Student;
 import com.example.courseenrollmentsystem.exceptions.ThisEmailIsUsedBefore;
 import lombok.AllArgsConstructor;
@@ -16,14 +17,15 @@ public class RegistrationServiceImpl implements RegistrationService{
     private StudentRepository studentRepository;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     @Override
-    public void register(Student student) {
-        String email = student.getEmail();
+    public void register(RegistrationRequest request) {
+        String email = request.getEmail();
         Student studentDB = studentRepository.findByEmail(email);
         if(studentDB != null)
             throw new ThisEmailIsUsedBefore("this email is used before");
-        String password = student.getPassword();
+        String password = request.getPassword();
         String endcodedPassword = bCryptPasswordEncoder.encode(password);
-        student.setPassword(endcodedPassword);
+        request.setPassword(endcodedPassword);
+        Student student = new Student(request.getFirstName(),request.getLastName(),request.getEmail(),request.getPassword());
         studentRepository.save(student);
 
     }

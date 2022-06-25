@@ -1,11 +1,10 @@
 package com.example.courseenrollmentsystem.security;
 
-import com.example.courseenrollmentsystem.jwt.JWTAuthenticationFilter;
-import com.example.courseenrollmentsystem.jwt.JWTAuthorizationFilter;
+import com.example.courseenrollmentsystem.jwt.JwtTokenVerifier;
+import com.example.courseenrollmentsystem.jwt.JwtUsernameAndPasswordAuthenticationFilter;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -13,6 +12,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import javax.crypto.SecretKey;
 
 import static com.example.courseenrollmentsystem.entity.Role.ADMIN;
 
@@ -23,6 +24,7 @@ import static com.example.courseenrollmentsystem.entity.Role.ADMIN;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private PasswordEncoder passwordEncoder;
     private StudentDetailsService studentDetailsService;
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(daoAuthenticationProvider());
@@ -30,28 +32,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.
-                csrf().disable()
+        http
+                .csrf().disable()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
+                .addFilter(new JwtUsernameAndPasswordAuthenticationFilter(authenticationManager()))
+                .addFilterAfter(new JwtTokenVerifier(),JwtUsernameAndPasswordAuthenticationFilter.class)
                 .authorizeRequests()
-                .antMatchers("/api/register")
-                .permitAll()
-//                .antMatchers("/courses").permitAll()
-//                .antMatchers("/categories").permitAll()
-//                .antMatchers("/students").permitAll()
-//                .antMatchers("/teachers").permitAll()
-//                .antMatchers("/api/password/reset")
-//                .permitAll()
-//                .antMatchers("/api/student/**")
-//                .permitAll()
-//                .antMatchers("/api/admin/**").permitAll()
+                .antMatchers("/api/register").permitAll()
+                .antMatchers("/api/admin/**").hasAuthority("ADMIN")
                 .anyRequest()
-                .authenticated()
-                .and()
-                .addFilter(new JWTAuthenticationFilter(authenticationManager()))
-                .addFilter(new JWTAuthorizationFilter(authenticationManager()))
+                .authenticated();
 
         ;
     }

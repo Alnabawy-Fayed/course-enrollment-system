@@ -7,11 +7,14 @@ import java.util.Collection;
 import java.util.Set;
 
 public class StudentDetails implements UserDetails {
-    private final String email;
+    private final String username;
+    private String email;
     private final String password;
+
     private final Set<? extends GrantedAuthority> grantedAuthorities;
 
-    public StudentDetails(String email, String password, Set<? extends GrantedAuthority> grantedAuthorities) {
+    public StudentDetails(String username, String email,String password, Set<? extends GrantedAuthority> grantedAuthorities) {
+        this.username = username;
         this.email = email;
         this.password = password;
         this.grantedAuthorities = grantedAuthorities;
@@ -29,7 +32,7 @@ public class StudentDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return email;
+        return username;
     }
 
     @Override

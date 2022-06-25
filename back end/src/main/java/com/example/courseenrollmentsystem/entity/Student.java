@@ -33,7 +33,7 @@ public class Student implements Serializable {
     private String password;
 
     @Column(name = "role")
-    private String role  = Role.USER.name();
+    private String role  = "ROLE_"+Role.USER.name();
 
     @ManyToMany(fetch = FetchType.EAGER,cascade =CascadeType.ALL)
     @JoinTable(name = "student_course",

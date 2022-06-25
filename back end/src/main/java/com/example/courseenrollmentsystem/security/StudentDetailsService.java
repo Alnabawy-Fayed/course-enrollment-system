@@ -16,9 +16,9 @@ import java.util.Collections;
 public class StudentDetailsService implements UserDetailsService {
     private final StudentRepository studentRepository;
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Student student = studentRepository.findByEmail(email);
-        SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_"+student.getRole());
-        return new StudentDetails(student.getEmail(),student.getPassword(), Collections.singleton(authority)) ;
+    public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
+        Student student = studentRepository.findByEmail(name);
+        SimpleGrantedAuthority authority = new SimpleGrantedAuthority(student.getRole());
+        return new StudentDetails(student.getFirstName(),student.getEmail(),student.getPassword(), Collections.singleton(authority)) ;
     }
 }
