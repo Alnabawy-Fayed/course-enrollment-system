@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class SubscriptionRequest {
-    private long studentId;
-    private long courseId;
+    private Long studentId;
+    private Long courseId;
 }

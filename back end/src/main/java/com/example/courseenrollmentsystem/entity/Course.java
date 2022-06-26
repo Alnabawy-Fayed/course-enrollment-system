@@ -7,6 +7,8 @@ import lombok.Setter;
 import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,43 +16,40 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @Entity(name = "course")
-public class Course {
+public class Course implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private long id;
+    private Long id;
 
-    @Column(name = "name")
     private String name;
 
-    @Column(name = "start_at")
-    private String start;
 
-    @Column(name = "end_at")
-    private String end;
+    private Instant startAt;
+
+    private Instant endAt;
 
     @Column(name = "course_code")
-    private String courseCode;
+    private String code;
 
-    @Column(name = "price")
-    private double price;
+
+    private Double price;
 
     @JoinColumn(name = "category_id")
-    private long categoryId;
+    private Long categoryId;
 
     @JoinColumn(name = "teacher_id")
-    private long teacherId;
+    private Long teacherId;
 
 
     @ManyToMany(mappedBy = "courses")
     private List<Student> students = new ArrayList<>();
 
 
-    public Course(String name, String start, String end, String courseCode, double price,long teacherId, long categoryId) {
+    public Course(String name, Instant start, Instant end, String code, Double price,Long teacherId, Long categoryId) {
         this.name = name;
-        this.start = start;
-        this.end = end;
-        this.courseCode = courseCode;
+        this.startAt = start;
+        this.endAt = end;
+        this.code = code;
         this.price = price;
         this.teacherId = teacherId;
         this.categoryId = categoryId;

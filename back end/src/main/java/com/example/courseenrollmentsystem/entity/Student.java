@@ -17,22 +17,15 @@ import java.util.List;
 public class Student implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private long id;
-
-    @Column(name = "first_name")
+    private Long id;
     private String firstName;
 
-    @Column(name = "last_name")
     private String lastName;
 
-    @Column(name = "email")
     private String email;
 
-    @Column(name = "password")
     private String password;
 
-    @Column(name = "role")
     private String role  = "ROLE_"+Role.USER.name();
 
     @ManyToMany(fetch = FetchType.EAGER,cascade =CascadeType.ALL)

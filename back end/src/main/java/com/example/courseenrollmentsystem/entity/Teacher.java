@@ -15,13 +15,8 @@ import java.util.List;
 public class Teacher {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private long id;
-
-    @Column(name = "name")
+    private Long id;
     private String name ;
-
-    @Column(name = "email")
     private String email;
 
 //    @OneToMany(mappedBy = "teacher")

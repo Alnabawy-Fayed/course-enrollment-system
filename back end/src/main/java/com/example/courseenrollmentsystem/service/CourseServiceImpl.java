@@ -1,14 +1,20 @@
 package com.example.courseenrollmentsystem.service;
 
 import com.example.courseenrollmentsystem.dao.CourseRepository;
+import com.example.courseenrollmentsystem.dao.StudentCourseRepo;
 import com.example.courseenrollmentsystem.dao.StudentRepository;
 import com.example.courseenrollmentsystem.entity.Course;
 import com.example.courseenrollmentsystem.entity.Student;
+import com.example.courseenrollmentsystem.entity.StudentCourse;
+import com.example.courseenrollmentsystem.entity.StudentCoursePK;
+import com.example.courseenrollmentsystem.exceptions.CourseNotFound;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -16,41 +22,32 @@ import java.util.List;
 public class CourseServiceImpl implements CourseService{
     private CourseRepository courseRepository;
     private StudentRepository studentRepository;
+    private StudentCourseRepo studentCourseRepo;
     @Override
     public void addCourse(Course course) {
         courseRepository.save(course);
     }
 
     @Override
-    public void deleteCourse(long id) {
+    public void deleteCourse(Long id) {
+        courseRepository.findById(id).orElseThrow(() -> new CourseNotFound("this course is not found"));
         courseRepository.deleteById(id);
     }
 
     @Override
-    public void subscribe(long studentId, long courseId) {
-        Student student = studentRepository.findById(studentId);
-        Course course = courseRepository.findById(courseId);
-        student.getCourses().add(course);
-        studentRepository.save(student);
+    public void subscribe(Long studentId, Long courseId) {
+        StudentCourse studentCourse = new StudentCourse(new StudentCoursePK(studentId,courseId));
+        studentCourseRepo.save(studentCourse);
 
     }
 
     @Override
-    public void unSubscribe(long studentId, long courseId) {
-        Student student = studentRepository.findById(studentId);
-        List<Course> courses = student.getCourses();
-        for(Course course : courses){
-            if(course.getId() == courseId){
-                courses.remove(course);
-                break;
-            }
-            studentRepository.save(student);
-        }
+    public void unSubscribe(Long studentId, Long courseId) {
+        studentCourseRepo.deleteById(studentId,courseId);
     }
 
     @Override
-    public List<Course> getMyCourses(long id) {
-        Student student = studentRepository.findById(id);
-        return student.getCourses();
+    public List<Course> getMyCourses(Long id) {
+        return  studentCourseRepo.findAllCourses(id);
     }
 }

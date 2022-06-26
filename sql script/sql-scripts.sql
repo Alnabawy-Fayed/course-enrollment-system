@@ -62,3 +62,7 @@ insert into course(name,start_at,end_at,course_code,price,category_id,teacher_id
 ('linear Algebra','2022-5-27','2022-6-27','c2004',500,2,2),
 ('calculas','2022-5-27','2022-6-27','c2005',1000,2,3),
 ('photoshop','2022-5-27','2022-6-27','c2006',500,3,1);
+
+alter table student_course add is_active bit(1) default 1;
+alter table student_course add subscription_date date;
+alter table student_course add last_update date;
