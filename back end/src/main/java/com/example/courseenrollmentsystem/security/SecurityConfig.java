@@ -1,3 +1,4 @@
+
 package com.example.courseenrollmentsystem.security;
 
 import com.example.courseenrollmentsystem.jwt.JwtTokenVerifier;
@@ -42,18 +43,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilterAfter(new JwtTokenVerifier(),JwtUsernameAndPasswordAuthenticationFilter.class)
                 .authorizeRequests()
                 .antMatchers(AUTH_WHITELIST).permitAll()
-//                .antMatchers("/v2/api-docs",
-//                        "/swagger-resources/configuration/ui",
-//                        "/swagger-resources",
-//                        "/swagger-resources/configuration/security",
-//                        "/swagger-ui.html",
-//                        "/webjars/**").permitAll()
                 .antMatchers("/api/register").permitAll()
                 .antMatchers("/api/admin/**").hasAuthority("ADMIN")
                 .anyRequest()
                 .authenticated();
 
-        ;
+
     }
     @Bean
     public DaoAuthenticationProvider daoAuthenticationProvider() {
@@ -63,11 +58,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return daoAuthenticationProvider;
     }
     private static final String[] AUTH_WHITELIST = {
-            // -- Swagger UI v2
-            "/v2/api-docs",
+//            "/v3/api-docs/**",
+//            "/swagger-ui/**",
+//            "/v2/api-docs/**",
+//            "/swagger-resources/**"
+             // Swagger UI v2
+            "/v2/api-docs/**",
             "/swagger-resources",
             "/swagger-resources/**",
-            "/configuration/ui",
+            "/configuration/**",
             "/configuration/security",
             "/swagger-ui.html",
             "/webjars/**",
@@ -78,9 +77,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     };
 
 
-
-//    @Override
-//    public void configure(WebSecurity web) throws Exception {
-//        web.ignoring().antMatchers("/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**");
-//    }
 }

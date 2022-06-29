@@ -10,6 +10,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -24,9 +25,9 @@ public class Course implements Serializable {
     private String name;
 
 
-    private Instant startAt;
+    private String startAt;
 
-    private Instant endAt;
+    private String endAt;
 
     @Column(name = "course_code")
     private String code;
@@ -40,12 +41,17 @@ public class Course implements Serializable {
     @JoinColumn(name = "teacher_id")
     private Long teacherId;
 
-
-    @ManyToMany(mappedBy = "courses")
-    private List<Student> students = new ArrayList<>();
-
-
-    public Course(String name, Instant start, Instant end, String code, Double price,Long teacherId, Long categoryId) {
+    public Course(String name, String  start, String  end, String code, Double price, Long teacherId, Long categoryId) {
+        this.name = name;
+        this.startAt = start;
+        this.endAt = end;
+        this.code = code;
+        this.price = price;
+        this.teacherId = teacherId;
+        this.categoryId = categoryId;
+    }
+    public Course(Long id,String name, String start, String end, String code, Double price,Long teacherId, Long categoryId) {
+        this.id = id;
         this.name = name;
         this.startAt = start;
         this.endAt = end;

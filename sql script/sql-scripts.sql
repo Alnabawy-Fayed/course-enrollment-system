@@ -6,6 +6,7 @@ create table student_course(
 student_id bigint(22),
 course_id bigint(22));
 
+
 create table category(
 id bigint(22) not null auto_increment,
 name varchar(255) default null,

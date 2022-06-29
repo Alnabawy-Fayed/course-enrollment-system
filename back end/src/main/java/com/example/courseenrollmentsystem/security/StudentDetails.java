@@ -1,3 +1,4 @@
+
 package com.example.courseenrollmentsystem.security;
 
 import org.springframework.security.core.GrantedAuthority;

@@ -48,6 +48,6 @@ public class CourseServiceImpl implements CourseService{
 
     @Override
     public List<Course> getMyCourses(Long id) {
-        return  studentCourseRepo.findAllCourses(id);
+        return  courseRepository.findAllCourses(id);
     }
 }

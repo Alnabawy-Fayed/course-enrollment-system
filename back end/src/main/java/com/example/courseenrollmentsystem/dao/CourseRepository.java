@@ -12,4 +12,6 @@ import java.util.Optional;
 public interface CourseRepository extends JpaRepository<Course,Long> {
     void deleteById(Long id);
     Optional<Course> findById(Long id);
+    @Query(value = "select * from course where id in (select course_id from student_course where student_id = ?1 and is_active = 1)",nativeQuery = true)
+    List<Course> findAllCourses(Long id);
 }

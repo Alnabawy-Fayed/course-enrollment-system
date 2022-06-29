@@ -18,6 +18,4 @@ public interface StudentCourseRepo extends JpaRepository<StudentCourse, StudentC
     @Query(value = "update student_course set is_active = 0 where (student_id = ?1 and course_id = ?2)",nativeQuery = true)
     void deleteById(Long studentId,Long courseId);
 
-    @Query(value = "select * from course where id in (select course_id from student_course where student_id = ?1 and is_active = 1)",nativeQuery = true)
-    List<Course> findAllCourses(Long id);
 }
